@@ -10,7 +10,9 @@ data/raw/
 data/processed/
 data/simulated/
 
-reports/
+reports/monitoring/
+reports/evaluation/*.html
+reports/evaluation/*.csv
 mlruns/
 models/
 

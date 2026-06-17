@@ -1,0 +1,16 @@
+data:
+  raw_path: data/raw/bank-additional/bank-additional-full.csv
+  train_path: data/processed/train.csv
+  test_path: data/processed/test.csv
+  target: y
+  test_size: 0.2
+  random_state: 42
+
+model:
+  output_path: models/model.joblib
+  type: logistic_regression
+  max_iter: 1000
+  class_weight: balanced
+
+evaluation:
+  metrics_path: reports/evaluation/metrics.json

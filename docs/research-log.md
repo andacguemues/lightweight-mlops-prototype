@@ -37,6 +37,15 @@ Beginn von Schritt 3: Datensatz beziehen und notebook-zentrierten Baseline-Workf
 - Als Datei wird `bank-additional-full.csv` genutzt.
 - Der Baseline-Workflow wird bewusst als Notebook umgesetzt, um später einen Vergleich zum MLOps-orientierten Workflow zu ermöglichen.
 
+### Technische Beobachtung
+
+Beim Erstellen des Baseline-Notebooks wurde festgestellt, dass Jupyter den Projekt-Hauptordner als aktuellen Arbeitsordner verwendet. Daher mussten die relativen Pfade im Notebook angepasst werden:
+
+- Datenpfad: `data/raw/bank-additional/bank-additional-full.csv`
+- Modellpfad: `models/baseline_logistic_regression.joblib`
+
+Diese Beobachtung ist relevant für die spätere Pipeline-Implementierung, da Pfade dort zentral und reproduzierbar definiert werden sollen.
+
 ### Umgesetzt
 - Datensatz heruntergeladen und lokal unter `data/raw/` abgelegt.
 - Data Card angelegt.
@@ -50,3 +59,34 @@ Beginn von Schritt 3: Datensatz beziehen und notebook-zentrierten Baseline-Workf
 
 ### Nächster Schritt
 Notebook-Baseline ausführen und Ergebnisse versionieren.
+
+## 2026-06-16
+
+### Ziel
+Überführung des notebook-zentrierten Baseline-Workflows in eine reproduzierbare Pipeline.
+
+### Entscheidungen
+- Die Datenaufbereitung, das Training und die Evaluation werden aus dem Notebook in separate Python-Skripte überführt.
+- Zentrale Parameter werden in `params.yaml` dokumentiert.
+- DVC wird zur Definition und Reproduktion der Pipeline verwendet.
+- MLflow wird noch nicht integriert, sondern als nächster Schritt nach der reproduzierbaren Pipeline eingeplant.
+
+### Umgesetzt
+- Download-Skript für den Datensatz erstellt.
+- Prepare-Skript für Train/Test-Split erstellt.
+- Train-Skript mit Preprocessing und Logistic Regression erstellt.
+- Evaluate-Skript mit zentralen Klassifikationsmetriken erstellt.
+- DVC initialisiert.
+- DVC-Pipeline mit den Stages `download_data`, `prepare_data`, `train_model` und `evaluate_model` definiert.
+- Pipeline mit `dvc repro` erfolgreich ausgeführt.
+
+### Ergebnis
+Der ML-Workflow kann nun außerhalb des Notebooks reproduzierbar ausgeführt werden. Dadurch entsteht ein erster MLOps-orientierter Workflow, der später gegenüber dem notebook-zentrierten Baseline-Workflow evaluiert werden kann.
+
+### Offene Punkte
+- MLflow Tracking und Modellversionierung integrieren.
+- Prediction-Service entwickeln.
+- Monitoring-Komponente entwickeln.
+
+### Nächster Schritt
+Integration von Experiment Tracking und Modellversionierung.

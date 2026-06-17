@@ -1,0 +1,92 @@
+schema: '2.0'
+stages:
+  download_data:
+    cmd: uv run python src/mlops_prototype/data/download.py
+    deps:
+    - path: src/mlops_prototype/data/download.py
+      hash: md5
+      md5: b482789a7549208ff663b610e29e6525
+      size: 1137
+    outs:
+    - path: data/raw/bank-additional/bank-additional-full.csv
+      hash: md5
+      md5: f6cb2c1256ffe2836b36df321f46e92c
+      size: 5834924
+  prepare_data:
+    cmd: uv run python src/mlops_prototype/data/prepare.py
+    deps:
+    - path: data/raw/bank-additional/bank-additional-full.csv
+      hash: md5
+      md5: f6cb2c1256ffe2836b36df321f46e92c
+      size: 5834924
+    - path: src/mlops_prototype/data/prepare.py
+      hash: md5
+      md5: c4b579571903b02e60a005b6a824a3e8
+      size: 1307
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.raw_path: data/raw/bank-additional/bank-additional-full.csv
+        data.target: y
+        data.test_path: data/processed/test.csv
+        data.test_size: 0.2
+        data.train_path: data/processed/train.csv
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: fc925ca0e6c31b024b33a07614ea5f4a
+      size: 982448
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 2e20bd5f9482fb7d8e966df3258253bb
+      size: 3929774
+  train_model:
+    cmd: uv run python src/mlops_prototype/training/train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 2e20bd5f9482fb7d8e966df3258253bb
+      size: 3929774
+    - path: src/mlops_prototype/training/train.py
+      hash: md5
+      md5: fc48c3b4205327e0771a85e4b1400aef
+      size: 1728
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.target: y
+        data.train_path: data/processed/train.csv
+        model.class_weight: balanced
+        model.max_iter: 1000
+        model.output_path: models/model.joblib
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 0f5a35d2c628754430090b98d5f2ab5e
+      size: 6721
+  evaluate_model:
+    cmd: uv run python src/mlops_prototype/training/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: fc925ca0e6c31b024b33a07614ea5f4a
+      size: 982448
+    - path: models/model.joblib
+      hash: md5
+      md5: 0f5a35d2c628754430090b98d5f2ab5e
+      size: 6721
+    - path: src/mlops_prototype/training/evaluate.py
+      hash: md5
+      md5: fd37250903ffc6bc0e0dbdfe84f78025
+      size: 1499
+    params:
+      params.yaml:
+        data.target: y
+        data.test_path: data/processed/test.csv
+        evaluation.metrics_path: reports/evaluation/metrics.json
+        model.output_path: models/model.joblib
+    outs:
+    - path: reports/evaluation/metrics.json
+      hash: md5
+      md5: a9fea5d4fe9448cd0b40fc6a86eb2679
+      size: 152

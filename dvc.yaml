@@ -1,0 +1,50 @@
+stages:
+  download_data:
+    cmd: uv run python src/mlops_prototype/data/download.py
+    deps:
+    - src/mlops_prototype/data/download.py
+    outs:
+    - data/raw/bank-additional/bank-additional-full.csv
+  prepare_data:
+    cmd: uv run python src/mlops_prototype/data/prepare.py
+    deps:
+    - data/raw/bank-additional/bank-additional-full.csv
+    - src/mlops_prototype/data/prepare.py
+    params:
+    - data.random_state
+    - data.raw_path
+    - data.target
+    - data.test_path
+    - data.test_size
+    - data.train_path
+    outs:
+    - data/processed/test.csv
+    - data/processed/train.csv
+  train_model:
+    cmd: uv run python src/mlops_prototype/training/train.py
+    deps:
+    - data/processed/train.csv
+    - src/mlops_prototype/training/train.py
+    params:
+    - data.random_state
+    - data.target
+    - data.train_path
+    - model.class_weight
+    - model.max_iter
+    - model.output_path
+    outs:
+    - models/model.joblib
+  evaluate_model:
+    cmd: uv run python src/mlops_prototype/training/evaluate.py
+    deps:
+    - data/processed/test.csv
+    - models/model.joblib
+    - src/mlops_prototype/training/evaluate.py
+    params:
+    - data.target
+    - data.test_path
+    - evaluation.metrics_path
+    - model.output_path
+    metrics:
+    - reports/evaluation/metrics.json:
+        cache: false
