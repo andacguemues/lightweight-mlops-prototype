@@ -37,14 +37,33 @@ stages:
   evaluate_model:
     cmd: uv run python src/mlops_prototype/training/evaluate.py
     deps:
-    - data/processed/test.csv
-    - models/model.joblib
-    - src/mlops_prototype/training/evaluate.py
+      - data/processed/test.csv
+      - models/model.joblib
+      - src/mlops_prototype/training/evaluate.py
     params:
-    - data.target
-    - data.test_path
-    - evaluation.metrics_path
-    - model.output_path
+      - data.target
+      - data.test_path
+      - evaluation.metrics_path
+      - mlflow.experiment_name
+      - mlflow.run_name
+      - model.output_path
     metrics:
-    - reports/evaluation/metrics.json:
-        cache: false
+      - reports/evaluation/metrics.json:
+          cache: false
+    outs:
+      - reports/evaluation/mlflow_run.json
+  register_model:
+    cmd: uv run python src/mlops_prototype/registry/register.py
+    deps:
+      - reports/evaluation/metrics.json
+      - reports/evaluation/mlflow_run.json
+      - src/mlops_prototype/registry/register.py
+    params:
+      - evaluation.metrics_path
+      - mlflow.minimum_roc_auc
+      - mlflow.model_alias
+      - mlflow.registered_model_name
+    outs:
+      - reports/evaluation/registry_info.json
+
+

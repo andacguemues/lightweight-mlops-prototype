@@ -17,3 +17,8 @@ mlruns/
 models/
 
 .dvc/tmp/
+
+# MLflow local metadata and artifacts
+mlflow.db
+mlruns/
+mlartifacts/

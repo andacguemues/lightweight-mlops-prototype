@@ -14,3 +14,10 @@ model:
 
 evaluation:
   metrics_path: reports/evaluation/metrics.json
+
+mlflow:
+  experiment_name: bank-marketing-classification
+  run_name: logistic-regression-dvc
+  registered_model_name: bank-marketing-classifier
+  model_alias: candidate
+  minimum_roc_auc: 0.75

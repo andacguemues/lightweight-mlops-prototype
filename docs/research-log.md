@@ -90,3 +90,41 @@ Der ML-Workflow kann nun außerhalb des Notebooks reproduzierbar ausgeführt wer
 
 ### Nächster Schritt
 Integration von Experiment Tracking und Modellversionierung.
+
+## 2026-06-17
+
+### Ziel
+
+Integration von Experiment Tracking und Modellversionierung in die reproduzierbare DVC-Pipeline.
+
+### Entscheidungen
+
+- MLflow wird für Experiment Tracking und Modellregistrierung verwendet.
+- Als lokales Backend wird eine SQLite-Datenbank eingesetzt.
+- Modelle werden erst registriert, wenn ein definierter Mindestwert für ROC-AUC erreicht wird.
+- Die aktuell registrierte Modellversion erhält zunächst den Alias `candidate`.
+- MLflow-Metadaten und Modellartefakte werden nicht über Git versioniert.
+
+### Umgesetzt
+
+- Evaluationsskript um MLflow Tracking erweitert.
+- Modellparameter und Evaluationsmetriken werden protokolliert.
+- Git-Commit sowie Hashwerte von Testdaten und Modellartefakt werden als Tags gespeichert.
+- Modell wird mit Input Example und Model Signature gespeichert.
+- Registry-Skript erstellt.
+- DVC-Pipeline um die Stage `register_model` erweitert.
+- Modellversion erfolgreich in der MLflow Model Registry registriert.
+
+### Ergebnis
+
+Der MLOps-Workflow ermöglicht nun die Zuordnung eines trainierten Modells zu Parametern, Metriken, Code-Stand und Datenartefakten. Akzeptierte Modelle werden versioniert in einer lokalen Model Registry verwaltet.
+
+### Offene Punkte
+
+- Prediction-Service entwickeln.
+- Modell anhand des Registry-Alias laden.
+- Monitoring-Komponente entwickeln.
+
+### Nächster Schritt
+
+Entwicklung eines Prediction-Service für die registrierte Modellversion.
