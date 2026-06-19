@@ -128,3 +128,40 @@ Der MLOps-Workflow ermöglicht nun die Zuordnung eines trainierten Modells zu Pa
 ### Nächster Schritt
 
 Entwicklung eines Prediction-Service für die registrierte Modellversion.
+
+## 2026-06-18
+
+### Ziel
+
+Bereitstellung des registrierten Machine-Learning-Modells über einen testbaren Prediction-Service.
+
+### Entscheidungen
+
+- FastAPI wird zur Implementierung des Prediction-Service verwendet.
+- Das Modell wird über den MLflow-Registry-Alias `candidate` geladen.
+- Eingaben und Ausgaben werden über Pydantic-Schemas validiert.
+- Der Service erhält die Endpunkte `/health`, `/model-info` und `/predict`.
+- Die API-Logik wird mit einem kontrollierten Dummy-Modell automatisiert getestet.
+
+### Umgesetzt
+
+- Request- und Response-Schemas erstellt.
+- MLflow-Modell über den Registry-Alias geladen.
+- Prediction-Endpunkt implementiert.
+- Health- und Modellinformations-Endpunkt implementiert.
+- Automatisierte API-Tests erstellt.
+- Prediction-Service lokal gestartet und mit einem Testrequest geprüft.
+
+### Ergebnis
+
+Die registrierte Modellversion kann nun außerhalb der Trainingspipeline über eine standardisierte HTTP-Schnittstelle verwendet werden. Der Service dokumentiert gleichzeitig, welches registrierte Modell und welcher Alias für die Vorhersage verwendet werden.
+
+### Offene Punkte
+
+- Neue Produktionsdaten simulieren.
+- Monitoring- und Drift-Komponente entwickeln.
+- Service containerisieren.
+
+### Nächster Schritt
+
+Entwicklung der Monitoring- und Drift-Erkennung.

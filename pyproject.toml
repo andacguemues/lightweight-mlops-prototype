@@ -29,6 +29,14 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "pytest>=9.1.0",
     "ruff>=0.15.17",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.uv.build-backend]
+module-name = "mlops_prototype"
+module-root = "src"
