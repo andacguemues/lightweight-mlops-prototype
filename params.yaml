@@ -21,3 +21,13 @@ mlflow:
   registered_model_name: bank-marketing-classifier
   model_alias: candidate
   minimum_roc_auc: 0.75
+
+monitoring:
+  reference_path: data/processed/test.csv
+  no_drift_path: data/simulated/no_drift.csv
+  drifted_path: data/simulated/drifted.csv
+  report_dir: reports/monitoring
+  summary_path: reports/monitoring/monitoring_summary.json
+  simulation_manifest_path: reports/monitoring/simulation_manifest.json
+  drift_share: 0.2
+  random_state: 42

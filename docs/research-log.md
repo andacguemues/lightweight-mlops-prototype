@@ -165,3 +165,56 @@ Die registrierte Modellversion kann nun außerhalb der Trainingspipeline über e
 ### Nächster Schritt
 
 Entwicklung der Monitoring- und Drift-Erkennung.
+
+## 2026-06-19
+
+### Ziel
+
+Entwicklung einer Monitoring-Komponente zur Erkennung von Data Drift
+und Prediction Drift.
+
+### Entscheidungen
+
+- Das Monitoring wird zunächst als reproduzierbarer Batch-Prozess
+  umgesetzt.
+- Als Referenz werden die Features des Testdatensatzes verwendet.
+- Die Zielvariable wird ausgeschlossen, da echte Labels im
+  Produktionsbetrieb nicht unmittelbar vorausgesetzt werden.
+- Es werden ein kontrolliertes No-Drift-Szenario und ein gezielt
+  verändertes Drift-Szenario erzeugt.
+- Zusätzlich zu den Features wird die Verteilung der positiven
+  Vorhersagewahrscheinlichkeit überwacht.
+- Dataset Drift wird zunächst bei einem Anteil von 20 Prozent
+  driftender Spalten angenommen.
+
+### Umgesetzt
+
+- Deterministische Simulation neuer Eingangsdaten entwickelt.
+- No-Drift- und Drift-Szenario erzeugt.
+- Evidently Data-Drift-Reports als HTML und JSON erstellt.
+- Monitoring-Zusammenfassung mit objektiven Erwartungen erzeugt.
+- Pipeline um die Stages `simulate_monitoring_data` und
+  `monitor_data` erweitert.
+- Drift-Reports für unveränderte und gezielt veränderte Daten
+  verglichen.
+
+### Ergebnis
+
+Der Prototyp kann nun veränderte Eingangsdaten und Veränderungen der
+Vorhersageverteilung erkennen und dokumentieren. Das kontrollierte
+No-Drift-Szenario dient gleichzeitig zur Beobachtung möglicher
+Fehlalarme.
+
+### Grenzen
+
+- Das Monitoring erfolgt batchweise und nicht kontinuierlich.
+- Es werden simulierte statt realer Produktionsdaten verwendet.
+- Ohne zeitnah verfügbare Labels wird Data Drift nur als Proxy für
+  mögliche Qualitätsveränderungen betrachtet.
+- Automatisierte Warnmeldungen und Retraining sind noch nicht Teil des
+  Kernartefakts.
+
+### Nächster Schritt
+
+Stabilisierung, Containerisierung, Gesamttests, Dokumentation und
+KPI-basierte Evaluation des Kernprototyps.

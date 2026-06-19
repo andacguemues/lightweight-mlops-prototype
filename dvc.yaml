@@ -37,33 +37,78 @@ stages:
   evaluate_model:
     cmd: uv run python src/mlops_prototype/training/evaluate.py
     deps:
-      - data/processed/test.csv
-      - models/model.joblib
-      - src/mlops_prototype/training/evaluate.py
+    - data/processed/test.csv
+    - models/model.joblib
+    - src/mlops_prototype/training/evaluate.py
     params:
-      - data.target
-      - data.test_path
-      - evaluation.metrics_path
-      - mlflow.experiment_name
-      - mlflow.run_name
-      - model.output_path
+    - data.target
+    - data.test_path
+    - evaluation.metrics_path
+    - mlflow.experiment_name
+    - mlflow.run_name
+    - model.output_path
     metrics:
-      - reports/evaluation/metrics.json:
-          cache: false
+    - reports/evaluation/metrics.json:
+        cache: false
     outs:
-      - reports/evaluation/mlflow_run.json
+    - reports/evaluation/mlflow_run.json
   register_model:
     cmd: uv run python src/mlops_prototype/registry/register.py
     deps:
-      - reports/evaluation/metrics.json
-      - reports/evaluation/mlflow_run.json
-      - src/mlops_prototype/registry/register.py
+    - reports/evaluation/metrics.json
+    - reports/evaluation/mlflow_run.json
+    - src/mlops_prototype/registry/register.py
     params:
-      - evaluation.metrics_path
-      - mlflow.minimum_roc_auc
-      - mlflow.model_alias
-      - mlflow.registered_model_name
+    - evaluation.metrics_path
+    - mlflow.minimum_roc_auc
+    - mlflow.model_alias
+    - mlflow.registered_model_name
     outs:
-      - reports/evaluation/registry_info.json
+    - reports/evaluation/registry_info.json
 
 
+  simulate_monitoring_data:
+    cmd: uv run python src/mlops_prototype/monitoring/simulate.py
+    deps:
+    - data/processed/test.csv
+    - src/mlops_prototype/monitoring/simulate.py
+    params:
+    - data.target
+    - monitoring.drifted_path
+    - monitoring.no_drift_path
+    - monitoring.random_state
+    - monitoring.simulation_manifest_path
+    outs:
+    - data/simulated/drifted.csv
+    - data/simulated/no_drift.csv
+    - reports/monitoring/simulation_manifest.json:
+        cache: false
+  monitor_data:
+    cmd: uv run python src/mlops_prototype/monitoring/report.py
+    deps:
+    - data/processed/test.csv
+    - data/simulated/drifted.csv
+    - data/simulated/no_drift.csv
+    - models/model.joblib
+    - src/mlops_prototype/monitoring/report.py
+    params:
+    - data.target
+    - model.output_path
+    - monitoring.drift_share
+    - monitoring.drifted_path
+    - monitoring.no_drift_path
+    - monitoring.reference_path
+    - monitoring.report_dir
+    - monitoring.summary_path
+    outs:
+    - reports/monitoring/drifted_report.html:
+        cache: false
+    - reports/monitoring/drifted_report.json:
+        cache: false
+    - reports/monitoring/no_drift_report.html:
+        cache: false
+    - reports/monitoring/no_drift_report.json:
+        cache: false
+    metrics:
+    - reports/monitoring/monitoring_summary.json:
+        cache: false

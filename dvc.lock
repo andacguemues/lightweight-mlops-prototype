@@ -122,3 +122,89 @@ stages:
       hash: md5
       md5: 846bdbe2a46c607c59f659842d1eefca
       size: 360
+  simulate_monitoring_data:
+    cmd: uv run python src/mlops_prototype/monitoring/simulate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: fc925ca0e6c31b024b33a07614ea5f4a
+      size: 982448
+    - path: src/mlops_prototype/monitoring/simulate.py
+      hash: md5
+      md5: f33a85857e4e6860cec1d76e5c76184e
+      size: 4983
+    params:
+      params.yaml:
+        data.target: y
+        monitoring.drifted_path: data/simulated/drifted.csv
+        monitoring.no_drift_path: data/simulated/no_drift.csv
+        monitoring.random_state: 42
+        monitoring.simulation_manifest_path: 
+          reports/monitoring/simulation_manifest.json
+    outs:
+    - path: data/simulated/drifted.csv
+      hash: md5
+      md5: 0f293503e3f928f520ee76e71972ad74
+      size: 969770
+    - path: data/simulated/no_drift.csv
+      hash: md5
+      md5: 8be7c13c18fe2ad284ea36206dff2060
+      size: 956804
+    - path: reports/monitoring/simulation_manifest.json
+      hash: md5
+      md5: 01ae4b0f76c51000a78f0da76d9d24be
+      size: 754
+  monitor_data:
+    cmd: uv run python src/mlops_prototype/monitoring/report.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: fc925ca0e6c31b024b33a07614ea5f4a
+      size: 982448
+    - path: data/simulated/drifted.csv
+      hash: md5
+      md5: 0f293503e3f928f520ee76e71972ad74
+      size: 969770
+    - path: data/simulated/no_drift.csv
+      hash: md5
+      md5: 8be7c13c18fe2ad284ea36206dff2060
+      size: 956804
+    - path: models/model.joblib
+      hash: md5
+      md5: 0f5a35d2c628754430090b98d5f2ab5e
+      size: 6721
+    - path: src/mlops_prototype/monitoring/report.py
+      hash: md5
+      md5: 9e2d632c9b3a08de27e1db0d967f27d1
+      size: 7399
+    params:
+      params.yaml:
+        data.target: y
+        model.output_path: models/model.joblib
+        monitoring.drift_share: 0.2
+        monitoring.drifted_path: data/simulated/drifted.csv
+        monitoring.no_drift_path: data/simulated/no_drift.csv
+        monitoring.reference_path: data/processed/test.csv
+        monitoring.report_dir: reports/monitoring
+        monitoring.summary_path: reports/monitoring/monitoring_summary.json
+    outs:
+    - path: reports/monitoring/drifted_report.html
+      hash: md5
+      md5: 206e20867e2256b71ff8f7daa861ebcd
+      size: 4566016
+    - path: reports/monitoring/drifted_report.json
+      hash: md5
+      md5: a373f169e665ab3ee859f59438271cee
+      size: 21189
+    - path: reports/monitoring/monitoring_summary.json
+      hash: md5
+      md5: 78740fc3d86cb7f5109cf02a52cf15f2
+      size: 1436
+    - path: reports/monitoring/no_drift_report.html
+      hash: md5
+      md5: 7291805b2776e36604737284d2b337b1
+      size: 4571737
+    - path: reports/monitoring/no_drift_report.json
+      hash: md5
+      md5: 47bf218d8073aba24769b08e0d85039a
+      size: 21020
