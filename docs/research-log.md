@@ -218,3 +218,64 @@ Fehlalarme.
 
 Stabilisierung, Containerisierung, Gesamttests, Dokumentation und
 KPI-basierte Evaluation des Kernprototyps.
+
+## 2026-06-19
+
+### Ziel
+
+Stabilisierung und Finalisierung des vollständigen
+MLOps-Kernprototyps.
+
+### Entscheidungen
+
+- Der Prediction-Service wird in einem Docker-Container bereitgestellt.
+- Während der lokalen Entwicklung wird das Modell über den
+  MLflow-Registry-Alias geladen.
+- Im Container wird ein unveränderliches, zuvor registriertes
+  Modellartefakt verwendet.
+- Ein vollständiger CI-Workflow prüft Codequalität, DVC-Pipeline,
+  Tests, Artefaktvalidierung und Containerstart.
+- Ein maschinenlesbarer Abschlussreport dokumentiert die Erfüllung
+  zentraler Artefaktanforderungen.
+
+### Umgesetzt
+
+- Prediction-Service um Registry- und Datei-Modus erweitert.
+- Dockerfile und Compose-Konfiguration erstellt.
+- Gesamttests für Metriken, Registry, Monitoring und Modellartefakt
+  ergänzt.
+- automatisches Validierungsskript erstellt.
+- Makefile für reproduzierbare Projektbefehle erstellt.
+- README, Architekturdokumentation und Evaluationsplan finalisiert.
+- GitHub-Actions-Workflow ergänzt.
+- vollständigen lokalen Abnahmelauf durchgeführt.
+
+### Ergebnis
+
+Der Kernprototyp bildet nun einen vollständigen lokal ausführbaren
+ML-Lifecycle ab:
+
+Rohdaten
+→ Datenaufbereitung
+→ reproduzierbares Training
+→ Evaluation
+→ Experiment Tracking
+→ Modellversionierung
+→ Prediction-Service
+→ Drift-Monitoring
+→ automatisierte Validierung
+
+### Grenzen
+
+- Monitoring wird batchweise ausgeführt.
+- Produktionsdaten werden simuliert.
+- Retraining wird nicht automatisch ausgelöst.
+- Der Container enthält eine unveränderliche Modellversion und muss
+  bei einer neuen Freigabe neu gebaut werden.
+- Hochverfügbarkeit, Cloud-Betrieb und Kubernetes gehören nicht zum
+  Kernartefakt.
+
+### Nächster Schritt
+
+Vorbereitung und Durchführung der wissenschaftlichen KPI-Evaluation im
+Rahmen der Bachelorarbeit.

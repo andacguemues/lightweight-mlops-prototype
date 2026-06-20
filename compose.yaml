@@ -1,0 +1,30 @@
+services:
+  prediction-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lightweight-mlops-prototype:local
+    container_name: lightweight-mlops-api
+
+    ports:
+      - "8000:8000"
+
+    environment:
+      MODEL_SOURCE: file
+      MODEL_PATH: models/model.joblib
+      REGISTRY_INFO_PATH: reports/evaluation/registry_info.json
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+
+    restart: unless-stopped

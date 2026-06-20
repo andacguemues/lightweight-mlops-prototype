@@ -42,10 +42,7 @@ class PredictionRequest(BaseModel):
             "nr_employed": "nr.employed",
         }
 
-        return {
-            column_mapping.get(name, name): value
-            for name, value in values.items()
-        }
+        return {column_mapping.get(name, name): value for name, value in values.items()}
 
 
 class PredictionResponse(BaseModel):
@@ -62,6 +59,7 @@ class HealthResponse(BaseModel):
 
 class ModelInfoResponse(BaseModel):
     status: str
+    model_source: Literal["registry", "file"]
     registered_model_name: str
     model_alias: str
     model_version: str | None = None

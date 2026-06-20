@@ -5,8 +5,8 @@ stages:
     deps:
     - path: src/mlops_prototype/data/download.py
       hash: md5
-      md5: b482789a7549208ff663b610e29e6525
-      size: 1137
+      md5: 7a234bdfedfa26f609d72640cb1945fa
+      size: 1138
     outs:
     - path: data/raw/bank-additional/bank-additional-full.csv
       hash: md5
@@ -21,8 +21,8 @@ stages:
       size: 5834924
     - path: src/mlops_prototype/data/prepare.py
       hash: md5
-      md5: c4b579571903b02e60a005b6a824a3e8
-      size: 1307
+      md5: 074d0b61a7408e92316ccf3c98e657b6
+      size: 1308
     params:
       params.yaml:
         data.random_state: 42
@@ -49,8 +49,8 @@ stages:
       size: 3929774
     - path: src/mlops_prototype/training/train.py
       hash: md5
-      md5: fc48c3b4205327e0771a85e4b1400aef
-      size: 1728
+      md5: 5339a595f8cdce871518f3aaa3d0a357
+      size: 1729
     params:
       params.yaml:
         data.random_state: 42
@@ -77,8 +77,8 @@ stages:
       size: 6721
     - path: src/mlops_prototype/training/evaluate.py
       hash: md5
-      md5: 0670754e969fafa20748371cb362e069
-      size: 5058
+      md5: 07ae099aa74933514e508bc7b745465c
+      size: 4957
     params:
       params.yaml:
         data.target: y
@@ -94,7 +94,7 @@ stages:
       size: 152
     - path: reports/evaluation/mlflow_run.json
       hash: md5
-      md5: 7fd825502b2df7815640adce0fb8c53d
+      md5: 2b12622fc8a4825b38d5e32b060b4d1f
       size: 228
   register_model:
     cmd: uv run python src/mlops_prototype/registry/register.py
@@ -105,12 +105,12 @@ stages:
       size: 152
     - path: reports/evaluation/mlflow_run.json
       hash: md5
-      md5: 7fd825502b2df7815640adce0fb8c53d
+      md5: 2b12622fc8a4825b38d5e32b060b4d1f
       size: 228
     - path: src/mlops_prototype/registry/register.py
       hash: md5
-      md5: 37f4c57d81f1b12f5fd42433f59a66cb
-      size: 3450
+      md5: 71096e2aa142b5153ffa4391309116c6
+      size: 3433
     params:
       params.yaml:
         evaluation.metrics_path: reports/evaluation/metrics.json
@@ -120,7 +120,7 @@ stages:
     outs:
     - path: reports/evaluation/registry_info.json
       hash: md5
-      md5: 846bdbe2a46c607c59f659842d1eefca
+      md5: 20c6c7475ed98ef24208bd42d9eec85f
       size: 360
   simulate_monitoring_data:
     cmd: uv run python src/mlops_prototype/monitoring/simulate.py
@@ -131,8 +131,8 @@ stages:
       size: 982448
     - path: src/mlops_prototype/monitoring/simulate.py
       hash: md5
-      md5: f33a85857e4e6860cec1d76e5c76184e
-      size: 4983
+      md5: 6da91b835031ad31aa9e24ad6b2b2f2a
+      size: 4666
     params:
       params.yaml:
         data.target: y
@@ -175,8 +175,8 @@ stages:
       size: 6721
     - path: src/mlops_prototype/monitoring/report.py
       hash: md5
-      md5: 9e2d632c9b3a08de27e1db0d967f27d1
-      size: 7399
+      md5: 2f798909413a5d08120936467ba3c62f
+      size: 6910
     params:
       params.yaml:
         data.target: y
@@ -190,19 +190,19 @@ stages:
     outs:
     - path: reports/monitoring/drifted_report.html
       hash: md5
-      md5: 206e20867e2256b71ff8f7daa861ebcd
+      md5: 3744f8925e632f8a18d42071dd34ab00
       size: 4566016
     - path: reports/monitoring/drifted_report.json
       hash: md5
-      md5: a373f169e665ab3ee859f59438271cee
-      size: 21189
+      md5: 426b4aa2185eff62400b587e42efd229
+      size: 21190
     - path: reports/monitoring/monitoring_summary.json
       hash: md5
       md5: 78740fc3d86cb7f5109cf02a52cf15f2
       size: 1436
     - path: reports/monitoring/no_drift_report.html
       hash: md5
-      md5: 7291805b2776e36604737284d2b337b1
+      md5: e9439180e2e96d195e655af3727ad63d
       size: 4571737
     - path: reports/monitoring/no_drift_report.json
       hash: md5

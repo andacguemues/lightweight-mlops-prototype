@@ -27,9 +27,7 @@ def add_predictions(
 
     result = data.copy()
 
-    result["prediction_probability"] = model.predict_proba(
-        data
-    )[:, 1]
+    result["prediction_probability"] = model.predict_proba(data)[:, 1]
 
     return result
 
@@ -49,17 +47,12 @@ def extract_drift_summary(
     for metric in metrics:
         config = metric.get("config", {})
 
-        metric_type = str(
-            config.get("type", "")
-        ).rsplit(":", maxsplit=1)[-1]
+        metric_type = str(config.get("type", "")).rsplit(":", maxsplit=1)[-1]
 
-        metric_name = str(
-            metric.get("metric_name", "")
-        )
+        metric_name = str(metric.get("metric_name", ""))
 
-        if (
-            metric_type == "DriftedColumnsCount"
-            or metric_name.startswith("DriftedColumnsCount(")
+        if metric_type == "DriftedColumnsCount" or metric_name.startswith(
+            "DriftedColumnsCount("
         ):
             value = metric.get("value") or {}
 
@@ -83,17 +76,11 @@ def extract_drift_summary(
         metric_config = test.get("metric_config", {})
         metric_params = metric_config.get("params", {})
 
-        metric_type = str(
-            metric_params.get("type", "")
-        ).rsplit(":", maxsplit=1)[-1]
+        metric_type = str(metric_params.get("type", "")).rsplit(":", maxsplit=1)[-1]
 
         column = metric_params.get("column")
 
-        if (
-            metric_type == "ValueDrift"
-            and status == "fail"
-            and column is not None
-        ):
+        if metric_type == "ValueDrift" and status == "fail" and column is not None:
             drifted_columns.append(str(column))
 
     dataset_drift = (
@@ -166,23 +153,14 @@ def run_scenario(
     summary.update(
         {
             "scenario": scenario_name,
-            "current_path": str(
-                current_path.relative_to(PROJECT_ROOT)
-            ),
-            "html_report": str(
-                html_path.relative_to(PROJECT_ROOT)
-            ),
-            "json_report": str(
-                json_path.relative_to(PROJECT_ROOT)
-            ),
+            "current_path": str(current_path.relative_to(PROJECT_ROOT)),
+            "html_report": str(html_path.relative_to(PROJECT_ROOT)),
+            "json_report": str(json_path.relative_to(PROJECT_ROOT)),
             "expected_dataset_drift": expected_dataset_drift,
         }
     )
 
-    summary["expectation_met"] = (
-        summary["dataset_drift"]
-        == expected_dataset_drift
-    )
+    summary["expectation_met"] = summary["dataset_drift"] == expected_dataset_drift
 
     return summary
 
@@ -190,30 +168,12 @@ def run_scenario(
 def main() -> None:
     params = load_params()
 
-    reference_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["reference_path"]
-    )
-    no_drift_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["no_drift_path"]
-    )
-    drifted_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["drifted_path"]
-    )
-    report_dir = (
-        PROJECT_ROOT
-        / params["monitoring"]["report_dir"]
-    )
-    summary_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["summary_path"]
-    )
-    model_path = (
-        PROJECT_ROOT
-        / params["model"]["output_path"]
-    )
+    reference_path = PROJECT_ROOT / params["monitoring"]["reference_path"]
+    no_drift_path = PROJECT_ROOT / params["monitoring"]["no_drift_path"]
+    drifted_path = PROJECT_ROOT / params["monitoring"]["drifted_path"]
+    report_dir = PROJECT_ROOT / params["monitoring"]["report_dir"]
+    summary_path = PROJECT_ROOT / params["monitoring"]["summary_path"]
+    model_path = PROJECT_ROOT / params["model"]["output_path"]
 
     target = params["data"]["target"]
     drift_share = params["monitoring"]["drift_share"]
@@ -221,9 +181,7 @@ def main() -> None:
     reference_data = pd.read_csv(reference_path)
 
     if target in reference_data.columns:
-        reference_features = reference_data.drop(
-            columns=[target]
-        )
+        reference_features = reference_data.drop(columns=[target])
     else:
         reference_features = reference_data.copy()
 
@@ -260,21 +218,15 @@ def main() -> None:
     ]
 
     monitoring_summary = {
-        "reference_path": str(
-            reference_path.relative_to(PROJECT_ROOT)
-        ),
-        "model_path": str(
-            model_path.relative_to(PROJECT_ROOT)
-        ),
+        "reference_path": str(reference_path.relative_to(PROJECT_ROOT)),
+        "model_path": str(model_path.relative_to(PROJECT_ROOT)),
         "drift_share_threshold": drift_share,
         "scenario_count": len(scenarios),
         "successful_scenarios": sum(
-            scenario["expectation_met"]
-            for scenario in scenarios
+            scenario["expectation_met"] for scenario in scenarios
         ),
         "all_expectations_met": all(
-            scenario["expectation_met"]
-            for scenario in scenarios
+            scenario["expectation_met"] for scenario in scenarios
         ),
         "scenarios": scenarios,
     }

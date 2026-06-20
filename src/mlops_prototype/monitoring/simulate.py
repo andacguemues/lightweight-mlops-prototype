@@ -41,9 +41,7 @@ def create_drifted_data(
 
     for column, transformation in numerical_changes.items():
         if column in drifted_data.columns:
-            drifted_data[column] = transformation(
-                drifted_data[column]
-            )
+            drifted_data[column] = transformation(drifted_data[column])
             changed_columns.append(column)
 
     categorical_changes = {
@@ -71,11 +69,7 @@ def create_drifted_data(
 
     for column in integer_columns:
         if column in drifted_data.columns:
-            drifted_data[column] = (
-                drifted_data[column]
-                .round()
-                .astype(int)
-            )
+            drifted_data[column] = drifted_data[column].round().astype(int)
 
     return drifted_data, changed_columns
 
@@ -83,22 +77,10 @@ def create_drifted_data(
 def main() -> None:
     params = load_params()
 
-    reference_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["reference_path"]
-    )
-    no_drift_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["no_drift_path"]
-    )
-    drifted_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["drifted_path"]
-    )
-    manifest_path = (
-        PROJECT_ROOT
-        / params["monitoring"]["simulation_manifest_path"]
-    )
+    reference_path = PROJECT_ROOT / params["monitoring"]["reference_path"]
+    no_drift_path = PROJECT_ROOT / params["monitoring"]["no_drift_path"]
+    drifted_path = PROJECT_ROOT / params["monitoring"]["drifted_path"]
+    manifest_path = PROJECT_ROOT / params["monitoring"]["simulation_manifest_path"]
 
     target = params["data"]["target"]
     random_state = params["monitoring"]["random_state"]
@@ -106,9 +88,7 @@ def main() -> None:
     reference_data = pd.read_csv(reference_path)
 
     if target in reference_data.columns:
-        reference_features = reference_data.drop(
-            columns=[target]
-        )
+        reference_features = reference_data.drop(columns=[target])
     else:
         reference_features = reference_data.copy()
 
@@ -142,24 +122,16 @@ def main() -> None:
     )
 
     manifest = {
-        "reference_path": str(
-            reference_path.relative_to(PROJECT_ROOT)
-        ),
-        "no_drift_path": str(
-            no_drift_path.relative_to(PROJECT_ROOT)
-        ),
-        "drifted_path": str(
-            drifted_path.relative_to(PROJECT_ROOT)
-        ),
+        "reference_path": str(reference_path.relative_to(PROJECT_ROOT)),
+        "no_drift_path": str(no_drift_path.relative_to(PROJECT_ROOT)),
+        "drifted_path": str(drifted_path.relative_to(PROJECT_ROOT)),
         "row_count": len(reference_features),
         "feature_count": reference_features.shape[1],
         "random_state": random_state,
         "changed_columns": sorted(set(changed_columns)),
         "scenarios": {
             "no_drift": {
-                "description": (
-                    "Exact feature copy of the reference dataset."
-                ),
+                "description": ("Exact feature copy of the reference dataset."),
                 "expected_dataset_drift": False,
             },
             "drifted": {

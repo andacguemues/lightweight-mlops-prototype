@@ -8,9 +8,7 @@ __pycache__/
 
 data/raw/
 data/processed/
-data/simulated/
 
-reports/monitoring/
 reports/evaluation/*.html
 reports/evaluation/*.csv
 mlruns/

@@ -1,0 +1,50 @@
+{
+  "generated_at_utc": "2026-06-20T08:40:55.069084+00:00",
+  "git_commit": "1075c4bffa2ecad777fc6c398cfa273f0677d361",
+  "all_checks_passed": true,
+  "checks": {
+    "required_files_exist": true,
+    "metrics_complete": true,
+    "mlflow_run_documented": true,
+    "model_registered": true,
+    "monitoring_expectations_met": true,
+    "dvc_pipeline_up_to_date": true
+  },
+  "required_files": {
+    "metrics": true,
+    "mlflow_run": true,
+    "registry_info": true,
+    "monitoring_summary": true,
+    "model": true,
+    "dvc_pipeline": true,
+    "dvc_lock": true,
+    "dockerfile": true,
+    "compose": true,
+    "readme": true,
+    "architecture": true,
+    "evaluation_plan": true
+  },
+  "dvc_status": {
+    "clean": true,
+    "return_code": 0,
+    "output": "Data and pipelines are up to date."
+  },
+  "model_metrics": {
+    "accuracy": 0.8651371692158291,
+    "precision": 0.4512,
+    "recall": 0.9116379310344828,
+    "f1": 0.6036389582590082,
+    "roc_auc": 0.9438378579178263
+  },
+  "registry": {
+    "status": "registered",
+    "model_name": "bank-marketing-classifier",
+    "model_version": 2,
+    "model_alias": "candidate"
+  },
+  "monitoring": {
+    "scenario_count": 2,
+    "successful_scenarios": 2,
+    "all_expectations_met": true
+  }
+}

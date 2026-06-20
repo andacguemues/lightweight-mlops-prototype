@@ -38,9 +38,7 @@ def main() -> None:
 
     metrics_path = PROJECT_ROOT / params["evaluation"]["metrics_path"]
     run_info_path = PROJECT_ROOT / "reports/evaluation/mlflow_run.json"
-    registry_info_path = (
-        PROJECT_ROOT / "reports/evaluation/registry_info.json"
-    )
+    registry_info_path = PROJECT_ROOT / "reports/evaluation/registry_info.json"
 
     metrics = load_json(metrics_path)
     run_info = load_json(run_info_path)
@@ -131,4 +129,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()  
+    main()
