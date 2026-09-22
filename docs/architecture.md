@@ -1,7 +1,3 @@
-
-### `docs/architecture.md`
-
-```markdown
 # System Architecture
 
 ## Purpose
@@ -33,3 +29,34 @@ Raw data
 → evaluation
 → MLflow run
 → model registration
+→ candidate alias
+```
+
+## Serving Flow
+
+```text
+Model registry (alias: candidate)
+→ prediction service
+→ validated request
+→ prediction + model metadata
+```
+
+## Monitoring Flow
+
+```text
+Reference data (test set, target removed)
++ simulated current data
+→ drift detection (feature and prediction distributions)
+→ HTML report + machine-readable summary
+→ expectation check (fails the pipeline on mismatch)
+```
+
+## Cross-cutting Components
+
+| Component | Role |
+|---|---|
+| DVC | Dependency graph and execution control for the pipeline |
+| MLflow | Run tracking and model registry, backed by a local SQLite file |
+
+No cluster, no managed cloud services and no external runtime
+dependencies are required.

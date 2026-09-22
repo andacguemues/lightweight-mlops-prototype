@@ -1,0 +1,36 @@
+{
+  "reference_path": "data/processed/test.csv",
+  "model_path": "models/model.joblib",
+  "drift_share_threshold": 0.2,
+  "scenario_count": 2,
+  "successful_scenarios": 1,
+  "all_expectations_met": false,
+  "scenarios": [
+    {
+      "dataset_drift": false,
+      "drifted_column_count": null,
+      "drifted_column_share": null,
+      "drifted_columns": [],
+      "drift_share_threshold": 0.2,
+      "scenario": "no_drift",
+      "current_path": "data/simulated/no_drift.csv",
+      "html_report": "reports/monitoring/no_drift_report.html",
+      "json_report": "reports/monitoring/no_drift_report.json",
+      "expected_dataset_drift": false,
+      "expectation_met": true
+    },
+    {
+      "dataset_drift": false,
+      "drifted_column_count": null,
+      "drifted_column_share": null,
+      "drifted_columns": [],
+      "drift_share_threshold": 0.2,
+      "scenario": "drifted",
+      "current_path": "data/simulated/drifted.csv",
+      "html_report": "reports/monitoring/drifted_report.html",
+      "json_report": "reports/monitoring/drifted_report.json",
+      "expected_dataset_drift": true,
+      "expectation_met": false
+    }
+  ]
+}

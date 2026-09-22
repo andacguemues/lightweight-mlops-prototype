@@ -1,0 +1,32 @@
+{
+  "reference_path": "data/processed/test.csv",
+  "no_drift_path": "data/simulated/no_drift.csv",
+  "drifted_path": "data/simulated/drifted.csv",
+  "row_count": 8238,
+  "feature_count": 20,
+  "random_state": 42,
+  "changed_columns": [
+    "age",
+    "campaign",
+    "cons.conf.idx",
+    "cons.price.idx",
+    "contact",
+    "duration",
+    "emp.var.rate",
+    "euribor3m",
+    "job",
+    "month",
+    "nr.employed",
+    "poutcome"
+  ],
+  "scenarios": {
+    "no_drift": {
+      "description": "Exact feature copy of the reference dataset.",
+      "expected_dataset_drift": false
+    },
+    "drifted": {
+      "description": "Numerical distributions and categorical frequencies were deliberately shifted.",
+      "expected_dataset_drift": true
+    }
+  }
+}

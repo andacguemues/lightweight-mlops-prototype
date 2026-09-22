@@ -1,7 +1,4 @@
 
-### `docs/evaluation-plan.md`
-
-```markdown
 # Evaluation Plan
 
 ## Objective

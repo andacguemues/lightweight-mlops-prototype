@@ -1,0 +1,6 @@
+{
+  "run_id": "4027dd3c74ca48c49c97a0f6eb732b19",
+  "experiment_id": "1",
+  "model_uri": "runs:/4027dd3c74ca48c49c97a0f6eb732b19/model",
+  "tracking_uri": "sqlite:////Users/user/Documents/lightweight-mlops-prototype/mlflow.db"
+}
