@@ -19,4 +19,5 @@ models/
 # MLflow local metadata and artifacts
 mlflow.db
 mlruns/
-mlartifacts/* [0-9].*
+mlartifacts/
+* [0-9].*
